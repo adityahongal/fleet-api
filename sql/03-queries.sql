@@ -277,3 +277,50 @@ FROM vehicles
 WHERE status = 'active'
 GROUP BY fleet_id
 ORDER BY fleet_id;
+
+-- ============================================================
+-- 09. HAVING
+-- ============================================================
+
+-- Find fleets that have more than 2 vehicles
+SELECT
+    fleet_id,
+    COUNT(*) AS vehicle_count
+FROM vehicles
+GROUP BY fleet_id
+HAVING COUNT(*) > 2
+ORDER BY fleet_id;
+
+
+-- Find vehicle statuses with more than 2 vehicles
+SELECT
+    status,
+    COUNT(*) AS vehicle_count
+FROM vehicles
+GROUP BY status
+HAVING COUNT(*) > 2
+ORDER BY status;
+
+
+-- Find fleets with more than 1 active vehicle
+SELECT
+    fleet_id,
+    COUNT(*) AS active_vehicle_count
+FROM vehicles
+WHERE status = 'active'
+GROUP BY fleet_id
+HAVING COUNT(*) > 1
+ORDER BY fleet_id;
+
+
+-- Find fleets with more than 2 vehicles,
+-- including the fleet name
+SELECT
+    f.name AS fleet_name,
+    COUNT(v.id) AS vehicle_count
+FROM fleets f
+INNER JOIN vehicles v
+    ON f.id = v.fleet_id
+GROUP BY f.id, f.name
+HAVING COUNT(v.id) > 2
+ORDER BY vehicle_count DESC;

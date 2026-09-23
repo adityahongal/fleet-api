@@ -229,3 +229,51 @@ FROM fleets f
 LEFT JOIN vehicles v
     ON f.id = v.fleet_id
 WHERE v.id IS NULL;
+
+-- ============================================================
+-- 08. GROUP BY
+-- ============================================================
+
+-- Count all vehicles
+SELECT
+    COUNT(*) AS total_vehicles
+FROM vehicles;
+
+
+-- Count vehicles in each fleet
+SELECT
+    fleet_id,
+    COUNT(*) AS vehicle_count
+FROM vehicles
+GROUP BY fleet_id
+ORDER BY fleet_id;
+
+
+-- Count vehicles in each fleet with fleet names
+SELECT
+    f.name AS fleet_name,
+    COUNT(v.id) AS vehicle_count
+FROM fleets f
+INNER JOIN vehicles v
+    ON f.id = v.fleet_id
+GROUP BY f.id, f.name
+ORDER BY f.id;
+
+
+-- Count vehicles by status
+SELECT
+    status,
+    COUNT(*) AS vehicle_count
+FROM vehicles
+GROUP BY status
+ORDER BY status;
+
+
+-- Count active vehicles in each fleet
+SELECT
+    fleet_id,
+    COUNT(*) AS active_vehicle_count
+FROM vehicles
+WHERE status = 'active'
+GROUP BY fleet_id
+ORDER BY fleet_id;
